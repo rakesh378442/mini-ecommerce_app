@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:easy_mart/view/screens/product_details_screen.dart';
 import 'package:easy_mart/viewmodels/category_provider.dart';
 import 'package:easy_mart/viewmodels/product_provider.dart';
+import 'package:easy_mart/viewmodels/slider_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   String selectedCategory = "All";
 
   @override
@@ -24,8 +27,16 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.microtask(() {
       Provider.of<ProductProvider>(context, listen: false).fetchProducts();
     });
-  }
+    Future.microtask(() {
+      context.read<SliderProvider>().startAutoSlide();
 
+    },);
+  }
+  @override
+  void dispose() {
+    context.read<SliderProvider>().disposeTimer();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProductProvider>(context);
@@ -87,18 +98,108 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: h * 0.025),
 
                   // Banner
-                  Container(
-                    height: h * 0.26,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(w * 0.05),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    child: Image.asset(
-                      "assets/images/shoes_banners.jpeg",
-                      fit: BoxFit.contain,
-                    ),
-                  ),
 
+                  Consumer<SliderProvider>(
+                    builder: (context, bannerProvider, child) {
+                      return Container(
+                        height: h * 0.22,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(w * 0.05),
+                          color: Colors.grey.shade100
+                          // border: Border.all(color: Colors.grey),
+                        ),
+                        child: ClipRRect(
+                          // borderRadius: BorderRadius.circular(w * 0.05),
+                          child: PageView.builder(
+                            controller: bannerProvider.pageController,
+                            itemCount: bannerProvider.images.length,
+                            onPageChanged: bannerProvider.onPageChanged,
+                            itemBuilder: (context, index) {
+                              return
+                                Padding(
+                                  padding: EdgeInsets.all(w * 0.03),
+                                  child: Row(
+                                    children: [
+
+                                      Expanded(
+                                        flex: 3,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Super Sale\nDiscount",
+                                              style: TextStyle(
+                                                fontSize: w * 0.058,
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                            ),
+
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Up to",
+                                                  style: TextStyle(
+                                                    fontSize: w * 0.037,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  " 50%",
+                                                  style: TextStyle(
+                                                    fontSize: w * 0.08,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                            SizedBox(height: h * 0.01),
+
+                                            SizedBox(
+                                              height: h * 0.042,
+                                              width: w * 0.27,
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "Shop Now",
+                                                  style: TextStyle(
+                                                    fontSize: w * 0.03,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+
+                                      Expanded(
+                                        flex: 6,
+                                        child: SizedBox(
+                                          height: h * 0.20,
+                                          child: Image.asset(
+                                            bannerProvider.images[index],
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+
+
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  
                   SizedBox(height: h * 0.025),
 
                   categoryList(w, h),

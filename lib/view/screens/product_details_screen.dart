@@ -25,6 +25,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final contents = [
+      widget.product.description ?? "No Description Available",
+      "This is the Specification content. Static text for this tab.",
+      "This is the Reviews content. Static text for reviews tab."
+    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -144,195 +149,56 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.product.title ?? "",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(3, (index) {
+                final labels = ["Description", "Specification", "Reviews"];
+                return Consumer<ProductProvider>(builder: (context, provider, child) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      provider.changeTab(index);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: provider.selectedIndex == index
+                          ? Colors.orange
+                          : Colors.transparent,
+                      foregroundColor: provider.selectedIndex == index
+                          ? Colors.white
+                          : Colors.black,
+                      elevation: 0,
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "\$${widget.product.price ?? ""}",
-                    style: const TextStyle(
-                      fontSize: 21,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment.centerRight,
                     child: Text(
-                      "Seller : Syed Noman",
+                      labels[index],
                       style: const TextStyle(
-                        fontSize: 19,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.star_rate,
-                              size: 16,
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: 3),
-                            Text(
-                              "4.8",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Text(
-                        "(320 Review)",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Color",
-                    style: const TextStyle(
-                      fontSize: 21,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.grey, // outer ring color
-                            width: 2,
-                          ),
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(14),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.black54, // inner solid circle
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Container(
-                        padding: EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.pinkAccent,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Container(
-                        padding: EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.orangeAccent,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Container(
-                        padding: EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Container(
-                        padding: EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
-                          foregroundColor: Colors.white,
-                          elevation: 0, // optional
-                        ),
-                        child: Text(
-                          "Description",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const Text(
-                        "Specification",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const Text(
-                        "Reviews",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.product.description ?? "No Description Available",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF333333),
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                ],
-              ),
+                  );
+                },);
+
+              }),
             ),
+            const SizedBox(height: 20),
+            Consumer<ProductProvider>(
+              builder: (context, provider, child) {
+                return Text(
+                  contents[provider.selectedIndex],
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF333333),
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: 0.2,
+                  ),
+                );
+              },
+            ),
+
+
           ],
         ),
       ),
+
       bottomNavigationBar: SafeArea(
         child: SizedBox(
           height: 90,

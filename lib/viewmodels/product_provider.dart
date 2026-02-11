@@ -4,6 +4,11 @@ import 'package:flutter/cupertino.dart';
 
 class ProductProvider extends ChangeNotifier {
   final ProductApiService apiService = ProductApiService();
+  int selectedIndex = 0;
+  void changeTab(int index) {
+    selectedIndex = index;
+    notifyListeners();
+  }
 
   List<ProductModel> productList = [];
   List<ProductModel> allProducts = [];
@@ -30,7 +35,6 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---------------- Fetch All ----------------
   Future<void> fetchProducts() async {
     isLoading = true;
     notifyListeners();
