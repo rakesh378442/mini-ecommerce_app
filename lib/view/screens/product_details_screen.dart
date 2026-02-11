@@ -20,8 +20,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     super.initState();
     Future.microtask(() {
       context.read<ProductProvider>().resetQuantity();
-    },);
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,68 +87,65 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 fit: BoxFit.contain,
               ),
             ),
-             Container(
-                color: Colors.grey.shade200,
-                width: double.infinity,
-                padding: EdgeInsets.only(bottom: 11),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 10,
-                        height: 10,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.orangeAccent,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      Container(
-                        width: 10,
-                        height: 10,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      Container(
-                        width: 10,
-                        height: 10,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      Container(
-                        width: 10,
-                        height: 10,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      Container(
-                        width: 10,
-                        height: 10,
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(height: 10,)
-                    ],
+            Container(
+              color: Colors.grey.shade200,
+              width: double.infinity,
+              padding: EdgeInsets.only(bottom: 11),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.orangeAccent,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-             ),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+            ),
 
-
-
-
-        Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -317,7 +315,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           color: Colors.black,
                         ),
                       ),
-
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -347,85 +344,104 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(40),
               ),
-              child: Consumer<ProductProvider>(builder: (context, value, child) {
-                return
-                  Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: Colors.grey.shade700),
+              child: Consumer<ProductProvider>(
+                builder: (context, value, child) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(color: Colors.grey.shade700),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  value.decrementQuantity();
+                                },
+                                child: Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Text(
+                                "${value.quantity}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              GestureDetector(
+                                onTap: () {
+                                  value.incrementQuantity();
+                                },
+                                child: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children:  [
-                            GestureDetector(
-                              onTap: () {
-                                value.decrementQuantity();
+                      ),
+
+                      const SizedBox(width: 20),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Center(
+                            child: TextButton(
+                              onPressed: () {
+                                final cart = context.read<CartProvider>();
+
+                                cart.addToCart(
+                                  CartModel(
+                                    id: widget.product.id,
+                                    name: widget.product.title,
+                                    price: widget.product.price.toDouble(),
+                                    image: widget.product.image,
+                                    qty: context
+                                        .read<ProductProvider>()
+                                        .quantity,
+                                  ),
+                                );
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Added to cart")),
+                                );
                               },
-                                child: Icon(Icons.remove, color: Colors.white, size: 18)),
-                            SizedBox(width: 12),
-                            Text(
-                              "${value.quantity}",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                              child: Text(
+                                "Add to Cart",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                            SizedBox(width: 12),
-                            GestureDetector(
-                              onTap: () {
-                                value.incrementQuantity();
-                              }, child: Icon(Icons.add, color: Colors.white, size: 18)),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-
-                    const SizedBox(width: 20),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child:  Center(
-                          child: TextButton(onPressed: (){
-                            final cart = context.read<CartProvider>();
-
-                            cart.addToCart(
-                              CartModel(
-                                id: widget.product.id,
-                                name: widget.product.title,
-                                price: widget.product.price.toDouble(),
-                                image: widget.product.image,
-                                qty: context.read<ProductProvider>().quantity,
-                              ),
-                            );
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Added to cart")),
-                            );
-
-                          }, child: Text(
-                            "Add to Cart",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),)
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),

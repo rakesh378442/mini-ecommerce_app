@@ -14,12 +14,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedCategory = "All";
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<CategoryProvider>(context, listen: false)
-          .fetchCategories();
+      Provider.of<CategoryProvider>(context, listen: false).fetchCategories();
     });
     Future.microtask(() {
       Provider.of<ProductProvider>(context, listen: false).fetchProducts();
@@ -37,141 +37,140 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: provider.isLoading
+        child:
+          provider.isLoading
             ? const Center(child: CircularProgressIndicator())
             : ListView(
-          padding: EdgeInsets.all(w * 0.04),
-          children: [
-            // Top icons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                circleIcon(Icons.grid_view_rounded, w),
-                circleIcon(CupertinoIcons.bell, w),
-              ],
-            ),
-
-            SizedBox(height: h * 0.025),
-
-            // Search
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Search...",
-                prefixIcon: const Icon(CupertinoIcons.search),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 2,
-                      height: h * 0.025,
-                      color: Colors.black54,
-                    ),
-                    SizedBox(width: w * 0.02),
-                    const Icon(Icons.tune),
-                  ],
-                ),
-                filled: true,
-                fillColor: Colors.grey.shade200,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(w * 0.06),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-
-            SizedBox(height: h * 0.025),
-
-            // Banner
-            Container(
-              height: h * 0.26,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(w * 0.05),
-                border: Border.all(color: Colors.grey),
-              ),
-              child: Image.asset(
-                "assets/images/shoes_banners.jpeg",
-                fit: BoxFit.contain,
-              ),
-            ),
-
-            SizedBox(height: h * 0.025),
-
-            categoryList(w, h),
-
-            SizedBox(height: h * 0.025),
-
-            // Title
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Special For You",
-                  style: TextStyle(
-                    fontSize: w * 0.045,
-                    fontWeight: FontWeight.bold,
+                padding: EdgeInsets.all(w * 0.04),
+                children: [
+                  // Top icons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      circleIcon(Icons.grid_view_rounded, w),
+                      circleIcon(CupertinoIcons.bell, w),
+                    ],
                   ),
-                ),
-                Text(
-                  "See all",
-                  style: TextStyle(fontSize: w * 0.035),
-                ),
-              ],
-            ),
-            SizedBox(height: h * 0.02),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: provider.productList.length,
-              gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: h * 0.24,
-                crossAxisSpacing: w * 0.03,
-                mainAxisSpacing: h * 0.02,
-              ),
-              itemBuilder: (context, index) {
-                final product = provider.productList[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            ProductDetailsScreen(product: product),
+
+                  SizedBox(height: h * 0.025),
+
+
+                  TextField(
+                    onChanged: (value) {
+                      context.read<ProductProvider>().searchProducts(value);
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Search...",
+                      prefixIcon: const Icon(CupertinoIcons.search),
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 2,
+                            height: h * 0.025,
+                            color: Colors.black54,
+                          ),
+                          SizedBox(width: w * 0.02),
+                          const Icon(Icons.tune),
+                        ],
                       ),
-                    );
-                  },
-                  child: productCard(
-                    product.image,
-                    product.title,
-                    product.price.toString(),
-                    w,
-                    h,
+                      filled: true,
+                      fillColor: Colors.grey.shade200,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(w * 0.06),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
-                );
-              },
-            ),
-          ],
-        ),
+
+
+                  SizedBox(height: h * 0.025),
+
+                  // Banner
+                  Container(
+                    height: h * 0.26,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(w * 0.05),
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: Image.asset(
+                      "assets/images/shoes_banners.jpeg",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+
+                  SizedBox(height: h * 0.025),
+
+                  categoryList(w, h),
+
+                  SizedBox(height: h * 0.025),
+
+                  // Title
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Special For You",
+                        style: TextStyle(
+                          fontSize: w * 0.045,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text("See all", style: TextStyle(fontSize: w * 0.035)),
+                    ],
+                  ),
+                  SizedBox(height: h * 0.02),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: provider.productList.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisExtent: h * 0.24,
+                      crossAxisSpacing: w * 0.03,
+                      mainAxisSpacing: h * 0.02,
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = provider.productList[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  ProductDetailsScreen(product: product),
+                            ),
+                          );
+                        },
+                        child: productCard(
+                          product.image,
+                          product.title,
+                          product.price.toString(),
+                          w,
+                          h,
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
       ),
     );
   }
 
-  // ================= PRODUCT CARD =================
-
   Widget productCard(
-      String image, String title, String price, double w, double h) {
+    String image,
+    String title,
+    String price,
+    double w,
+    double h,
+  ) {
     return Stack(
       children: [
         Container(
           width: w * 0.42,
           height: h * 0.24,
-          padding: EdgeInsets.fromLTRB(
-            w * 0.03,
-            h * 0.025,
-            w * 0.03,
-            h * 0.02,
-          ),
+          padding: EdgeInsets.fromLTRB(w * 0.03, h * 0.025, w * 0.03, h * 0.02),
           decoration: BoxDecoration(
             color: const Color(0xFFF2F2F2),
             borderRadius: BorderRadius.circular(w * 0.045),
@@ -250,17 +249,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // ================= COMMON WIDGETS =================
-
   Widget colorDot(Color color, double w) {
     return Container(
       margin: EdgeInsets.only(right: w * 0.015),
       width: w * 0.025,
       height: w * 0.025,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
   }
 
@@ -290,9 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               final category = provider.categories[index];
 
-              // ✅ FIX 1: correct comparison
-              final bool isSelected =
-                  category.name == selectedCategory;
+              final bool isSelected = category.name == selectedCategory;
 
               return GestureDetector(
                 onTap: () {
@@ -301,21 +293,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
 
                   if (category.name == "All") {
-                    context
-                        .read<ProductProvider>()
-                        .fetchProducts();
+                    context.read<ProductProvider>().fetchProducts();
                   } else {
-                    context
-                        .read<ProductProvider>()
-                        .fetchProductsByCategory(
+                    context.read<ProductProvider>().fetchProductsByCategory(
                       category.name,
                     );
                   }
                 },
 
-                // ✅ FIX 2: child missing (VERY IMPORTANT)
                 child: categoryItem(
-                  getCategoryIcon(category.name), // ✅ FIX 3
+                  getCategoryIcon(category.name),
                   category.name,
                   isSelected,
                   w,
@@ -327,11 +314,8 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-  // Widget categoryList(double w, double h) { return SizedBox( height: 90, child: ListView( scrollDirection: Axis.horizontal, children: [
-  //   categoryItem(Image.asset("assets/images/category.jpeg", width: 30), "All", true,w), categoryItem(Image.asset("assets/images/shoes.jpeg", width: 35), "Shoes", false,w), categoryItem(Image.asset("assets/images/men.jpeg", width: 30), "Men's", false,w), categoryItem(Image.asset("assets/images/watch.jpeg", width: 30), "Watch", false,w), categoryItem(Image.asset("assets/images/headphone.jpeg", width: 30), "Electronic", false,w), ], ), ); }
 
-  Widget categoryItem(
-      IconData icon, String text, bool selected, double w) {
+  Widget categoryItem(IconData icon, String text, bool selected, double w) {
     return Padding(
       padding: EdgeInsets.only(right: w * 0.04),
       child: Column(
@@ -347,22 +331,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 2,
               ),
             ),
-            child: Icon(
-              icon,
-              size: w * 0.07,
-              color: Colors.black87,
-            ),
+            child: Icon(icon, size: w * 0.07, color: Colors.black87),
           ),
           SizedBox(height: w * 0.015),
 
-          // ✅ FIXED TEXT
           Text(
             capitalize(text),
             style: TextStyle(
               color: selected ? Colors.orange : Colors.black87,
               fontSize: w * 0.032,
-              fontWeight:
-              selected ? FontWeight.w600 : FontWeight.normal,
+              fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ],
@@ -390,8 +368,10 @@ class _HomeScreenState extends State<HomeScreen> {
         return Icons.category;
     }
   }
+
   String capitalize(String text) {
     if (text.isEmpty) return text;
     return text[0].toUpperCase() + text.substring(1);
   }
 }
+

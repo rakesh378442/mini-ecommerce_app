@@ -11,18 +11,15 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      bottomNavigationBar:
-      context.watch<CartProvider>().cartItems.isEmpty
+      bottomNavigationBar: context.watch<CartProvider>().cartItems.isEmpty
           ? null
           : bottomButton(height, width),
 
@@ -63,7 +60,6 @@ class _CartScreenState extends State<CartScreen> {
       body: SafeArea(
         child: Consumer<CartProvider>(
           builder: (context, cart, child) {
-
             if (cart.cartItems.isEmpty) {
               return const Center(child: Text("Cart Empty"));
             }
@@ -72,7 +68,6 @@ class _CartScreenState extends State<CartScreen> {
               padding: EdgeInsets.all(width * 0.04),
               itemCount: cart.cartItems.length,
               itemBuilder: (context, index) {
-
                 final item = cart.cartItems[index];
 
                 return cartItem(item, height, width);
@@ -85,7 +80,6 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget cartItem(item, double height, double width) {
-
     final cart = context.read<CartProvider>();
 
     return Container(
@@ -97,7 +91,6 @@ class _CartScreenState extends State<CartScreen> {
       ),
       child: Row(
         children: [
-
           Container(
             height: height * 0.10,
             width: width * 0.18,
@@ -114,25 +107,29 @@ class _CartScreenState extends State<CartScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.name,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: width * 0.04)),
+                Text(
+                  item.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: width * 0.04,
+                  ),
+                ),
 
                 SizedBox(height: height * 0.005),
 
-                Text("\$${item.price}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: width * 0.04)),
+                Text(
+                  "\$${item.price}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: width * 0.04,
+                  ),
+                ),
               ],
             ),
           ),
 
           Column(
             children: [
-
-
               Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -153,18 +150,17 @@ class _CartScreenState extends State<CartScreen> {
 
               SizedBox(height: height * 0.01),
 
-
               Container(
                 padding: EdgeInsets.symmetric(
-                    horizontal: width * 0.03,
-                    vertical: height * 0.006),
+                  horizontal: width * 0.03,
+                  vertical: height * 0.006,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
                   children: [
-
                     GestureDetector(
                       onTap: () {
                         cart.decreaseQty(item.id);
@@ -174,11 +170,12 @@ class _CartScreenState extends State<CartScreen> {
 
                     SizedBox(width: width * 0.02),
 
-                    Text(item.qty.toString(),
-                        style: TextStyle(fontSize: width * 0.04)),
+                    Text(
+                      item.qty.toString(),
+                      style: TextStyle(fontSize: width * 0.04),
+                    ),
 
                     SizedBox(width: width * 0.02),
-
 
                     GestureDetector(
                       onTap: () {
@@ -190,18 +187,15 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
   }
 
-
   Widget bottomButton(double height, double width) {
-
     return Consumer<CartProvider>(
       builder: (context, cart, child) {
-
         return Container(
           padding: EdgeInsets.all(width * 0.06),
           decoration: const BoxDecoration(
@@ -220,8 +214,7 @@ class _CartScreenState extends State<CartScreen> {
                   style: TextStyle(fontSize: width * 0.050),
                   decoration: InputDecoration(
                     hintText: "Enter Discount Code",
-                    suffixIcon:
-                    Padding(
+                    suffixIcon: Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
                         "Apply",
@@ -243,18 +236,23 @@ class _CartScreenState extends State<CartScreen> {
 
               SizedBox(height: height * 0.02),
 
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Subtotal",
-                      style: TextStyle(
-                          fontSize: width * 0.045,
-                          color: Colors.black38)),
-                  Text("\$${cart.subtotal.toStringAsFixed(2)}",
-                      style: TextStyle(
-                          fontSize: width * 0.045,
-                          fontWeight: FontWeight.bold)),
+                  Text(
+                    "Subtotal",
+                    style: TextStyle(
+                      fontSize: width * 0.045,
+                      color: Colors.black38,
+                    ),
+                  ),
+                  Text(
+                    "\$${cart.subtotal.toStringAsFixed(2)}",
+                    style: TextStyle(
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
 
@@ -263,14 +261,20 @@ class _CartScreenState extends State<CartScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Total",
-                      style: TextStyle(
-                          fontSize: width * 0.045,
-                          fontWeight: FontWeight.bold)),
-                  Text("\$${cart.total.toStringAsFixed(2)}",
-                      style: TextStyle(
-                          fontSize: width * 0.045,
-                          fontWeight: FontWeight.bold)),
+                  Text(
+                    "Total",
+                    style: TextStyle(
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "\$${cart.total.toStringAsFixed(2)}",
+                    style: TextStyle(
+                      fontSize: width * 0.045,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
 
@@ -287,10 +291,13 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   onPressed: () {},
-                  child: Text("Checkout",
-                      style: TextStyle(
-                          fontSize: width * 0.045,
-                          color: Colors.white)),
+                  child: Text(
+                    "Checkout",
+                    style: TextStyle(
+                      fontSize: width * 0.045,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ],

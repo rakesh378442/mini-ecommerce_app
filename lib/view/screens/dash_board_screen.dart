@@ -26,7 +26,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return Scaffold(
       body: screens[currentIndex],
 
-
       bottomNavigationBar: Container(
         height: 70,
         decoration: BoxDecoration(
@@ -36,10 +35,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             topRight: Radius.circular(20),
           ),
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-            ),
+            BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10),
           ],
         ),
         child: Row(
@@ -55,7 +51,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     );
   }
 
-
   Widget navItem(IconData icon, int index) {
     bool isSelected = currentIndex == index;
 
@@ -68,11 +63,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 26,
-            color: isSelected ? Colors.orange : Colors.grey,
-          ),
+          Icon(icon, size: 26, color: isSelected ? Colors.orange : Colors.grey),
           const SizedBox(height: 6),
           Container(
             height: 7,
@@ -81,8 +72,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               color: Colors.orange,
               borderRadius: BorderRadius.circular(10),
             ),
-          )
-
+          ),
         ],
       ),
     );
