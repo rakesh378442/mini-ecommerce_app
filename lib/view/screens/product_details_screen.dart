@@ -15,6 +15,18 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  int selectedColorIndex = 0;
+
+  final List<Color> colors = [
+    Colors.black54,
+    Colors.pinkAccent,
+    Colors.orangeAccent,
+    Colors.blueAccent,
+    Colors.grey,
+  ];
+
+  int selectedTab = 0;
+
   @override
   void initState() {
     super.initState();
@@ -25,11 +37,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final contents = [
-      widget.product.description ?? "No Description Available",
-      "This is the Specification content. Static text for this tab.",
-      "This is the Reviews content. Static text for reviews tab."
-    ];
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -149,56 +156,224 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
             ),
 
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(3, (index) {
-                final labels = ["Description", "Specification", "Reviews"];
-                return Consumer<ProductProvider>(builder: (context, provider, child) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      provider.changeTab(index);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: provider.selectedIndex == index
-                          ? Colors.orange
-                          : Colors.transparent,
-                      foregroundColor: provider.selectedIndex == index
-                          ? Colors.white
-                          : Colors.black,
-                      elevation: 0,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.product.title ?? "",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "\$${widget.product.price ?? ""}",
+                    style: const TextStyle(
+                      fontSize: 21,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Align(
+                    alignment: Alignment.centerRight,
                     child: Text(
-                      labels[index],
+                      "Seller : Syed Noman",
                       style: const TextStyle(
+                        fontSize: 19,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  );
-                },);
-
-              }),
-            ),
-            const SizedBox(height: 20),
-            Consumer<ProductProvider>(
-              builder: (context, provider, child) {
-                return Text(
-                  contents[provider.selectedIndex],
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF333333),
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: 0.2,
                   ),
-                );
-              },
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.star_rate,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 3),
+                            Text(
+                              "4.8",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "(320 Review)",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Color",
+                    style: const TextStyle(
+                      fontSize: 21,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: List.generate(colors.length, (index) {
+                      return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedColorIndex = index;
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: selectedColorIndex == index
+                                    ? colors[index]
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                            child: Container(
+                              width: 28,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: colors[index],
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          )
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 10),
+
+
+                  // ================= TABS =================
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      tabButton("Description", 0),
+                      tabButton("Specification", 1),
+                      tabButton("Reviews", 2),
+                    ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  if (selectedTab == 0)
+                    Text(
+                      widget.product.description ?? "",
+                      style: const TextStyle(fontSize: 16, height: 1.5),
+                    )
+
+                  else if (selectedTab == 1)
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          specRow(Icons.category, "Category", widget.product.category),
+
+                          const Divider(height: 25),
+
+                          specRow(Icons.attach_money, "Price",
+                              "\$${widget.product.price}"),
+
+                          const Divider(height: 25),
+
+                          specRow(Icons.confirmation_number,
+                              "Product ID", "${widget.product.id}"),
+                        ],
+                      ),
+                    )
+
+                  else
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          // Rating Row
+                          Row(
+                            children: [
+                              Text(
+                                "${widget.product.rating.rate}",
+                                style: const TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(width: 10),
+
+                              Row(
+                                children: List.generate(5, (index) {
+                                  return Icon(
+                                    index <
+                                        widget.product.rating.rate
+                                            .round()
+                                        ? Icons.star
+                                        : Icons.star_border,
+                                    color: Colors.orange,
+                                    size: 20,
+                                  );
+                                }),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          Text(
+                            "${widget.product.rating.count} Reviews",
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                ],
+              ),
             ),
-
-
           ],
         ),
       ),
-
       bottomNavigationBar: SafeArea(
         child: SizedBox(
           height: 90,
@@ -276,21 +451,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               onPressed: () {
                                 final cart = context.read<CartProvider>();
 
-                                cart.addToCart(
+                                bool added = cart.addToCart(
                                   CartModel(
                                     id: widget.product.id,
                                     name: widget.product.title,
                                     price: widget.product.price.toDouble(),
                                     image: widget.product.image,
-                                    qty: context
-                                        .read<ProductProvider>()
-                                        .quantity,
+                                    category: widget.product.category,
+                                    qty: context.read<ProductProvider>().quantity,
                                   ),
                                 );
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Added to cart")),
-                                );
+                                if (added) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Added to cart")),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Already added to cart")),
+                                  );
+                                }
                               },
                               child: Text(
                                 "Add to Cart",
@@ -313,5 +493,67 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       ),
     );
+
+
   }
+
+
+
+  /// TAB BUTTON
+  Widget tabButton(String title, int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedTab = index;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 15, vertical: 8),
+        decoration: BoxDecoration(
+          color: selectedTab == index
+              ? Colors.orange
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: selectedTab == index
+                ? Colors.white
+                : Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget specRow(IconData icon, String title, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.orange),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                value,
+                style: const TextStyle(
+                    color: Colors.grey),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
 }

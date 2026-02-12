@@ -29,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     Future.microtask(() {
       context.read<SliderProvider>().startAutoSlide();
-
     },);
+
   }
   @override
   void dispose() {
@@ -64,8 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   SizedBox(height: h * 0.025),
-
-
                   TextField(
                     onChanged: (value) {
                       context.read<ProductProvider>().searchProducts(value);
@@ -78,128 +76,169 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Container(
                             width: 2,
-                            height: h * 0.025,
+                            height: h * 0.016,
                             color: Colors.black54,
                           ),
                           SizedBox(width: w * 0.02),
-                          const Icon(Icons.tune),
+                          const Icon(Icons.filter_list_rounded),
                         ],
                       ),
                       filled: true,
                       fillColor: Colors.grey.shade200,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(w * 0.06),
+                        borderRadius: BorderRadius.circular(w * 0.05),
                         borderSide: BorderSide.none,
                       ),
                     ),
                   ),
 
-
                   SizedBox(height: h * 0.025),
-
-                  // Banner
-
                   Consumer<SliderProvider>(
                     builder: (context, bannerProvider, child) {
-                      return Container(
+                      return SizedBox(
                         height: h * 0.22,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(w * 0.05),
-                          color: Colors.grey.shade100
-                          // border: Border.all(color: Colors.grey),
-                        ),
                         child: ClipRRect(
-                          // borderRadius: BorderRadius.circular(w * 0.05),
-                          child: PageView.builder(
-                            controller: bannerProvider.pageController,
-                            itemCount: bannerProvider.images.length,
-                            onPageChanged: bannerProvider.onPageChanged,
-                            itemBuilder: (context, index) {
-                              return
-                                Padding(
-                                  padding: EdgeInsets.all(w * 0.03),
-                                  child: Row(
-                                    children: [
+                          borderRadius: BorderRadius.circular(w * 0.05),
+                          child: Stack(
+                            children: [
 
-                                      Expanded(
-                                        flex: 3,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "Super Sale\nDiscount",
-                                              style: TextStyle(
-                                                fontSize: w * 0.058,
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
+                              // 🔹 BACKGROUND IMAGE
+                              Positioned.fill(
+                                child: Image.asset(
+                                  "assets/images/backgroun.jpg",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
 
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "Up to",
-                                                  style: TextStyle(
-                                                    fontSize: w * 0.037,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  " 50%",
-                                                  style: TextStyle(
-                                                    fontSize: w * 0.08,
-                                                    fontWeight: FontWeight.w800,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                              // 🔹 PAGE VIEW CONTENT
+                              PageView.builder(
+                                controller: bannerProvider.pageController,
+                                itemCount: bannerProvider.images.length,
+                                onPageChanged: bannerProvider.onPageChanged,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.all(w * 0.03),
+                                    child: Row(
+                                      children: [
 
-                                            SizedBox(height: h * 0.01),
 
-                                            SizedBox(
-                                              height: h * 0.042,
-                                              width: w * 0.27,
-                                              child: ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                                onPressed: () {},
-                                                child: Text(
-                                                  "Shop Now",
-                                                  style: TextStyle(
-                                                    fontSize: w * 0.03,
-                                                    color: Colors.white,
-                                                  ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Super Sale\nDiscount",
+                                                style: TextStyle(
+                                                  fontSize: w * 0.058,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Colors.black,
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
 
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Up to",
+                                                    style: TextStyle(
+                                                      fontSize: w * 0.037,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    " 50%",
+                                                    style: TextStyle(
+                                                      fontSize: w * 0.08,
+                                                      fontWeight: FontWeight.w800,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
 
-                                      Expanded(
-                                        flex: 6,
-                                        child: SizedBox(
-                                          height: h * 0.20,
-                                          child: Image.asset(
-                                            bannerProvider.images[index],
-                                            fit: BoxFit.contain,
+                                              SizedBox(height: h * 0.01),
+
+                                              SizedBox(
+                                                height: h * 0.042,
+                                                width: w * 0.27,
+                                                child: ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Colors.orange,
+                                                  ),
+                                                  onPressed: () {},
+                                                  child: Text(
+                                                    "Shop Now",
+                                                    style: TextStyle(
+                                                      fontSize: w * 0.03,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
+
+                                        // 🔹 IMAGE SECTION
+                                        Expanded(
+                                          flex: 6,
+                                          child: SizedBox(
+                                            height: h * 0.20,
+                                            child: Image.asset(
+                                              bannerProvider.images[index],
+                                              fit: BoxFit.contain,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+
+                              // 🔹 INDICATOR
+                              Positioned(
+                                bottom: h * 0.01,
+                                left: 0,
+                                right: 0,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                    bannerProvider.images.length,
+                                        (index) {
+                                      bool isActive =
+                                          bannerProvider.currentPage == index;
+
+                                      return AnimatedContainer(
+                                        duration: const Duration(milliseconds: 300),
+                                        margin:
+                                        EdgeInsets.symmetric(horizontal: w * 0.01),
+                                        width: isActive ? w * 0.04 : w * 0.02,
+                                        height: w * 0.02,
+                                        decoration: BoxDecoration(
+                                          color:
+                                          isActive ? Colors.black : Colors.transparent,
+                                          borderRadius:
+                                          BorderRadius.circular(w * 0.02),
+                                          border: Border.all(
+                                            color: Colors.black,
+                                            width: 1.5,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-
-
-                            },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );
                     },
                   ),
-                  
+
                   SizedBox(height: h * 0.025),
 
                   categoryList(w, h),
@@ -221,38 +260,78 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   SizedBox(height: h * 0.02),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: provider.productList.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisExtent: h * 0.24,
-                      crossAxisSpacing: w * 0.03,
-                      mainAxisSpacing: h * 0.02,
-                    ),
-                    itemBuilder: (context, index) {
-                      final product = provider.productList[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  ProductDetailsScreen(product: product),
+                  Consumer<ProductProvider>(
+                    builder: (context, provider, child) {
+
+                      if (provider.isLoading || provider.isSearching) {
+                        return SizedBox(
+                          height: h * 0.4,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+
+                      if (provider.productList.isEmpty) {
+                        return SizedBox(
+                          height: h * 0.4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.search_off, size: 60, color: Colors.grey),
+                              SizedBox(height: h * 0.01),
+                              Text(
+                                "No Product Found",
+                                style: TextStyle(
+                                  fontSize: w * 0.045,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: provider.productList.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisExtent: h * 0.24,
+                          crossAxisSpacing: w * 0.03,
+                          mainAxisSpacing: h * 0.02,
+                        ),
+                        itemBuilder: (context, index) {
+                          final product = provider.productList[index];
+
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      ProductDetailsScreen(product: product),
+                                ),
+                              );
+                            },
+                            child: productCard(
+                              product.image,
+                              product.title,
+                              product.price.toString(),
+                              w,
+                              h,
                             ),
                           );
                         },
-                        child: productCard(
-                          product.image,
-                          product.title,
-                          product.price.toString(),
-                          w,
-                          h,
-                        ),
                       );
                     },
-                  ),
+                  )
+
+
+
                 ],
               ),
       ),
@@ -393,13 +472,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     selectedCategory = category.name;
                   });
 
-                  if (category.name == "All") {
-                    context.read<ProductProvider>().fetchProducts();
-                  } else {
-                    context.read<ProductProvider>().fetchProductsByCategory(
-                      category.name,
-                    );
-                  }
+                  context
+                      .read<ProductProvider>()
+                      .filterByCategory(category.name);
                 },
 
                 child: categoryItem(

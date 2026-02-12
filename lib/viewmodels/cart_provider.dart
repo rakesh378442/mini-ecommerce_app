@@ -5,17 +5,17 @@ class CartProvider extends ChangeNotifier {
   final List<CartModel> _cart = [];
 
   List<CartModel> get cartItems => _cart;
-
-  void addToCart(CartModel item) {
+  double _discount = 0;
+  bool addToCart(CartModel item) {
     int index = _cart.indexWhere((e) => e.id == item.id);
 
     if (index != -1) {
-      _cart[index].qty++;
+      return false;
     } else {
       _cart.add(item);
+      notifyListeners();
+      return true;
     }
-
-    notifyListeners();
   }
 
   void removeItem(int id) {
@@ -61,8 +61,12 @@ class CartProvider extends ChangeNotifier {
 
   double get deliveryCharge => subtotal > 500 ? 0 : 40;
 
-  double get discount => 0;
+  double get discount => _discount;
 
+  void applyDiscount(double value) {
+    _discount = value;
+    notifyListeners();
+  }
   double get total {
     return subtotal + tax + deliveryCharge - discount;
   }

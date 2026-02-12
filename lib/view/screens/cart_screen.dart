@@ -20,7 +20,69 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       bottomNavigationBar: context.watch<CartProvider>().cartItems.isEmpty
-          ? null
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: width * 0.16,
+              backgroundColor: Colors.orange.shade50,
+              child: Icon(
+                Icons.shopping_cart_outlined,
+                size: width * 0.18,
+                color: Colors.orange,
+              ),
+            ),
+
+            SizedBox(height: height * 0.02),
+
+            Text(
+              "Your Cart is Empty",
+              style: TextStyle(
+                fontSize: width * 0.05,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+
+            SizedBox(height: height * 0.01),
+
+            Text(
+              "Add items to start shopping",
+              style: TextStyle(
+                fontSize: width * 0.04,
+                color: Colors.grey,
+              ),
+            ),
+
+            SizedBox(height: height * 0.03),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.08,
+                  vertical: height * 0.015,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => DashBoardScreen()),
+                );
+              },
+              child: Text(
+                "Shop Now",
+                style: TextStyle(
+                  fontSize: width * 0.045,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
+        ),)
           : bottomButton(height, width),
 
       appBar: AppBar(
@@ -87,15 +149,25 @@ class _CartScreenState extends State<CartScreen> {
       padding: EdgeInsets.all(width * 0.03),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Row(
         children: [
+
+          // IMAGE
           Container(
             height: height * 0.10,
             width: width * 0.18,
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
+              color: Colors.grey.shade100,
               borderRadius: BorderRadius.circular(15),
             ),
             child: Image.network(item.image, fit: BoxFit.contain),
@@ -103,47 +175,58 @@ class _CartScreenState extends State<CartScreen> {
 
           SizedBox(width: width * 0.03),
 
+          // NAME + PRICE
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   item.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontSize: width * 0.04,
                   ),
                 ),
-
                 SizedBox(height: height * 0.005),
+
+
+                Text(
+                  item.category,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: width * 0.035,
+                  ),
+                ),
+
+                SizedBox(height: height * 0.008),
 
                 Text(
                   "\$${item.price}",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: width * 0.04,
+                    color: Colors.orange,
                   ),
                 ),
               ],
             ),
           ),
 
+          // DELETE + QTY
           Column(
             children: [
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () {
-                    cart.removeItem(item.id);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(width * 0.02),
-                    child: Icon(
-                      Icons.delete_outline_outlined,
-                      color: Colors.orange,
-                      size: width * 0.07,
-                    ),
+
+              InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onTap: () => cart.removeItem(item.id),
+                child: Padding(
+                  padding: EdgeInsets.all(width * 0.02),
+                  child: Icon(
+                    Icons.delete_outline_outlined,
+                    color: Colors.orange,
+                    size: width * 0.07,
                   ),
                 ),
               ),
@@ -156,31 +239,28 @@ class _CartScreenState extends State<CartScreen> {
                   vertical: height * 0.006,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
+                  color:  Colors.grey.shade100,
+                  border: Border.all(
+                      color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        cart.decreaseQty(item.id);
-                      },
+                      onTap: () => cart.decreaseQty(item.id),
                       child: Icon(Icons.remove, size: width * 0.05),
                     ),
-
                     SizedBox(width: width * 0.02),
-
                     Text(
                       item.qty.toString(),
-                      style: TextStyle(fontSize: width * 0.04),
+                      style: TextStyle(
+                        fontSize: width * 0.04,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-
                     SizedBox(width: width * 0.02),
-
                     GestureDetector(
-                      onTap: () {
-                        cart.increaseQty(item.id);
-                      },
+                      onTap: () => cart.increaseQty(item.id),
                       child: Icon(Icons.add, size: width * 0.05),
                     ),
                   ],
@@ -194,6 +274,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget bottomButton(double height, double width) {
+    TextEditingController discountController = TextEditingController();
     return Consumer<CartProvider>(
       builder: (context, cart, child) {
         return Container(
@@ -208,20 +289,47 @@ class _CartScreenState extends State<CartScreen> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextFormField(
-                  style: TextStyle(fontSize: width * 0.050),
+                  controller: discountController,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  style: TextStyle(
+                    fontSize: width * 0.040,
+                    fontWeight: FontWeight.w200,
+                  ),
                   decoration: InputDecoration(
                     hintText: "Enter Discount Code",
                     suffixIcon: Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Text(
-                        "Apply",
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
-                          fontSize: width * 0.040,
+                      padding: const EdgeInsets.only(top: 15, right: 10),
+                      child: GestureDetector(
+                        onTap: () {
+
+                          final value = double.tryParse(discountController.text);
+
+                          if (value != null && value > 0) {
+
+                            context.read<CartProvider>().applyDiscount(value);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Discount Applied")),
+                            );
+
+                          } else {
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Enter valid discount")),
+                            );
+
+                          }
+                        },
+                        child: Text(
+                          "Apply",
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: width * 0.040,
+                          ),
                         ),
                       ),
                     ),

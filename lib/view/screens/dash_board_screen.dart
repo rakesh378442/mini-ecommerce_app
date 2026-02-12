@@ -3,6 +3,9 @@ import 'package:easy_mart/view/screens/favorite_screen.dart';
 import 'package:easy_mart/view/screens/home_screen.dart';
 import 'package:easy_mart/view/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../viewmodels/cart_provider.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
@@ -63,8 +66,57 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 26, color: isSelected ? Colors.orange : Colors.grey),
+
+          if (index == 1)
+            Consumer<CartProvider>(
+              builder: (context, cart, child) {
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+
+                    Icon(
+                      icon,
+                      size: 26,
+                      color: isSelected
+                          ? Colors.orange
+                          : Colors.grey,
+                    ),
+
+                    if (cart.cartItems.isNotEmpty)
+                      Positioned(
+                        right: -6,
+                        top: -4,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            "${cart.cartItems.length}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            )
+          else
+            Icon(
+              icon,
+              size: 26,
+              color: isSelected
+                  ? Colors.orange
+                  : Colors.grey,
+            ),
+
           const SizedBox(height: 6),
+
           Container(
             height: 7,
             width: isSelected ? 7 : 0,
@@ -77,4 +129,5 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       ),
     );
   }
+
 }
