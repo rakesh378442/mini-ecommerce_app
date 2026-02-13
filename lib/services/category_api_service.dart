@@ -8,6 +8,7 @@ class CategoryApi {
   static Future<List<CategoryModel>> fetchCategories() async {
     final response = await http.get(Uri.parse(_baseUrl));
 
+
     if (response.statusCode == 200) {
       final List data = json.decode(response.body);
       return data.map((e) => CategoryModel.fromJson(e)).toList();
@@ -16,3 +17,4 @@ class CategoryApi {
     }
   }
 }
+
