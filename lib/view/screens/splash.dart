@@ -8,9 +8,7 @@ class Splash extends StatefulWidget {
   State<Splash> createState() => _SplashState();
 }
 
-class _SplashState extends State<Splash>
-    with SingleTickerProviderStateMixin {
-
+class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
@@ -19,26 +17,24 @@ class _SplashState extends State<Splash>
   void initState() {
     super.initState();
 
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
 
-    _scaleAnimation =
-        Tween<double>(begin: 0.5, end: 1).animate(CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeOutBack,
-        ));
+    _scaleAnimation = Tween<double>(
+      begin: 0.5,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
-    _fadeAnimation =
-        Tween<double>(begin: 0, end: 1).animate(_controller);
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
 
     _controller.forward();
 
-
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     });
   }
@@ -62,8 +58,6 @@ class _SplashState extends State<Splash>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
-
                   CircleAvatar(
                     radius: 80,
                     backgroundColor: Colors.grey.shade200,

@@ -7,6 +7,7 @@ class CategoryProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   List<CategoryModel> get categories => _categories;
+
   bool get isLoading => _isLoading;
 
   Future<void> fetchCategories() async {
@@ -16,10 +17,7 @@ class CategoryProvider extends ChangeNotifier {
     try {
       final apiCategories = await CategoryApi.fetchCategories();
 
-      _categories = [
-        CategoryModel(id: "all", name: "All"),
-        ...apiCategories,
-      ];
+      _categories = [CategoryModel(id: "all", name: "All"), ...apiCategories];
     } catch (e) {
       debugPrint("Category error: $e");
     }
